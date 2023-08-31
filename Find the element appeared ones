@@ -1,0 +1,14 @@
+// here we will be using the properties of the XOR the properties of it are
+// first is-->>aXORa=0
+// second is-->> aXOR0=a
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int result = 0;
+        for(int i=0;i<nums.size();i++) {
+            result ^= nums[i];
+        }
+
+        return result;
+    }
+};
