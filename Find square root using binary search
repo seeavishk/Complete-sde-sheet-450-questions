@@ -1,0 +1,25 @@
+int floorSqrt(int n)
+{   long long ans;
+    long long  low =0;
+    long long high =ceil((float)n/2);
+
+    while(low <=high){
+         long long mid = (low+high)/2;
+
+        if(mid*mid == n)
+        {
+            return floor( mid);
+        }
+        else if(mid*mid <n)
+        {
+            low = mid+1;
+            ans =floor(mid);
+        }
+        else{
+            high = mid -1;
+        }
+
+    }
+    return ans;
+
+}
