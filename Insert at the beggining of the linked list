@@ -1,0 +1,8 @@
+Node* insertAtfirst(Node* list,int newValue)
+{
+node* head=list;
+node* temp=newNode(newValue);
+temp->next=head;
+curr=head;
+return head;
+}
