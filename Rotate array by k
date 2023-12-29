@@ -1,0 +1,14 @@
+class Solution {
+public:
+    void rotate(std::vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k % n;  // To handle cases where k is greater than n
+        if (k == 0) {
+            return;  // No rotation needed
+        }
+
+        std::reverse(nums.begin(), nums.end());  // Reverse the entire vector
+        std::reverse(nums.begin(), nums.begin() + k);  // Reverse the first k elements
+        std::reverse(nums.begin() + k, nums.end());  // Reverse the remaining elements
+    }
+};
