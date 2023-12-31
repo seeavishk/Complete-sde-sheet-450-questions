@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxLengthBetweenEqualCharacters(string s) {
+        int maxDistance = -1;
+        unordered_map<char, int> firstOccurrence;
+        
+        for (int i = 0; i < s.length(); i++) {
+            if (firstOccurrence.find(s[i]) == firstOccurrence.end()) {
+                firstOccurrence[s[i]] = i;
+            } else {
+                maxDistance = max(maxDistance, i - firstOccurrence[s[i]] - 1);
+            }
+        }
+        
+        return maxDistance;
+    }
+};
