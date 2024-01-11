@@ -1,0 +1,19 @@
+v=vector<int> findMissingRepeatingNumbers(vector < int > a) {
+    //it use the tc of O(2N) and space of O(n) and that is not acceptable
+    // Write your code here
+    int n=a.size();
+    int hash[n+1]={0};
+    for(int i=0;i<n;i++){
+        hash[a[i]]++;
+    }
+    int repeating =-1,missing=-1;
+    for(int i=1;i<=n;i++){
+        if(hash[i]==2) repeating= i;
+        else if(hash[i]==0) missing =i;
+
+        if(repeating!=-1 && missing !=-1){
+            break;
+        } 
+    }
+    return {repeating,missing};            //in line one the vector of int and int has been taken for the list determination
+}
