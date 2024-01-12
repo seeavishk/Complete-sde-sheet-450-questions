@@ -1,0 +1,14 @@
+//using adjacency list to represent the graph will be used here...
+#include<iostream>
+using namespace std;
+int main(){
+int n,mn;
+cin>>n>>m;
+vector<int> adj[n+1];
+for(int i=0;i<n;i++){
+int u,v;
+cin>>u>>v;
+adj[u].push_back(v);
+}
+return 0;
+}
