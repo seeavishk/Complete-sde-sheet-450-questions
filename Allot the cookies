@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        int cookies_num=s.size();   //cookies ka number nikaal liya
+        if(cookies_num == 0) return 0;       //agar cookies hai hi nhi to kya hi content bhroge..
+        sort(g.begin(), g.end());               //sorted the content ka array
+        sort(s.begin(), s.end());               //sorted the cookie ka conten
+        int i=0;
+        for(int j=0;i<g.size() && j<s.size() ;j++)
+        if(g[i]<=s[j]) i++;
+        return i;
+    }
+};
