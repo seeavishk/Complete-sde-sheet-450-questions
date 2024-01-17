@@ -1,0 +1,15 @@
+   int n = s.length();
+        int totalBeauty = 0;
+        for (int start = 0; start < n; start++) {
+            std::unordered_map<char, int> freq;
+            for (int end = start; end < n; end++) {
+                freq[s[end]]++;
+                int maxfreq = 0, minfreq = INT_MAX;
+                for (const auto& pair : freq) {
+                    maxfreq = std::max(maxfreq, pair.second);
+                    minfreq = std::min(minfreq, pair.second);
+                }
+                totalBeauty += maxfreq - minfreq;
+            }
+        }
+        return totalBeauty;
