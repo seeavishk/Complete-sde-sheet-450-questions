@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void findingof(vector<vector<int>> &res, vector<int> &temp, vector<int> nums, int idx){
+        if(idx==nums.size()){
+            res.push_back(temp);
+            return ;
+        }
+        temp.push_back(nums[idx]);
+        findingof(res,temp,nums,idx+1);
+        temp.pop_back();
+        findingof(res,temp,nums,idx+1);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> temp;
+        findingof(res,temp,nums,0);
+        return res;
+    }
+};
