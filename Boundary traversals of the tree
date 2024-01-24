@@ -1,0 +1,131 @@
+# include<bits/stdc++.h>
+
+# include<iostream>
+
+# include<vector>
+
+using namespace std;
+
+ 
+
+void traverseleft(TreeNode<int>* root, vector<int>& ans){
+
+    if(root == NULL){
+
+        return;
+
+    }
+
+    if(root->left == NULL && root->right == NULL){
+
+        return;
+
+    }
+
+    ans.push_back(root->data);
+
+    if(root->left){
+
+        traverseleft(root->left, ans);
+
+    }
+
+    else if(root->right){
+
+        traverseleft(root->right, ans);
+
+    }
+
+} 
+
+ 
+
+void traverseleaf(TreeNode<int>* root, vector<int>& ans){
+
+    if(root == NULL){
+
+        return;
+
+    }
+
+    if(root->left == NULL && root->right == NULL){
+
+        ans.push_back(root->data);
+
+    }
+
+    traverseleaf(root->left, ans);
+
+    traverseleaf(root->right, ans);
+
+}
+
+ 
+
+void traverseright(TreeNode<int>* root, vector<int>& ans){
+
+    if(root == NULL){
+
+        return;
+
+    }
+
+    if(root->left == NULL && root->right == NULL){
+
+        return;
+
+    }
+
+    if(root->right){
+
+        traverseright(root->right, ans);
+
+    }
+
+    else if(root->left){
+
+        traverseright(root->left, ans);
+
+    }
+
+    ans.push_back(root->data);
+
+}
+
+ 
+
+vector<int> traverseBoundary(TreeNode<int>* root){
+
+    vector<int> ans;
+
+    if(root == NULL){
+
+        return ans;
+
+    }
+
+    ans.push_back(root->data);
+
+    //left part ko traverse karna hai
+
+    if(root->left)
+
+    traverseleft(root->left, ans);
+
+    //Saari ki Saari leaf node ko traverse karna hai
+
+    traverseleaf(root->left, ans);
+
+    traverseleaf(root->right,ans);
+
+    //right part ko traverse karna hai
+
+    if(root->right)
+
+    traverseright(root->right, ans);
+
+ 
+
+    return ans;
+
+}
