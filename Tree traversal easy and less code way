@@ -1,0 +1,15 @@
+vector<int> ino, pre, post;
+
+void solve(TreeNode* root){
+    if(!root) return;
+
+    pre.push_back(root->data);
+    solve(root->left);
+    ino.push_back(root->data);
+    solve(root->right);
+    post.push_back(root->data);
+}
+vector<vector<int>> getTreeTraversal(TreeNode *root){
+    solve(root);
+    return {ino, pre, post};
+}
