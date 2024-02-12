@@ -1,0 +1,29 @@
+int Floor(BinaryTreeNode<int> *node, int input)
+
+{
+
+    
+
+    int floor=-1;
+
+    while(node){
+
+        if(node->data == input)
+
+            return input;
+
+        else if(node->data<input){
+
+            floor=node->data;
+
+            node=node->right;
+
+        }
+
+        else node=node->left;
+
+    }
+
+    return floor;
+
+}
