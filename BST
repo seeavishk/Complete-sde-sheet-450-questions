@@ -1,0 +1,8 @@
+bool isValidBST(vector<int>&ino){
+    int check=0;
+    for(auto i:ino){
+        if(check>=i)return false;
+        else check=i;
+    }
+    return true;
+}
