@@ -1,0 +1,27 @@
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy=new ListNode();    //ek dummy node bnao
+        ListNode* temp=dummy;              //temp to store the fist value of the node of the temp
+        int carry=0;                       //carry le lo for the zero
+        while(l1!=NULL || l2!=NULL || carry){     //the base condition of the linked list formed
+            int sum=0;
+            if(l1 !=NULL){
+                sum+=l1->val;
+                l1=l1->next;
+            }
+            if(l2!=NULL){
+                sum+=l2->val;
+                l2=l2->next;
+            } 
+
+            //for storing the value of numbers more than 10 waala
+            sum+=carry;
+            carry=sum/10;
+            ListNode *node=new ListNode(sum%10);
+            temp->next=node;
+            temp=temp->next;
+        }
+        return dummy ->next;
+    }
+};
