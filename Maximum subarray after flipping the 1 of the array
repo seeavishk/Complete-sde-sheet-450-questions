@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int j = 0;
+        int cnt = 0; 
+        int ans = 0; 
+        for(int i = 0 ;i<nums.size();i++)
+        {
+            if(nums[i] == 0) //just to do the count of the zeros in the nums...
+            {
+                cnt++;
+            }
+            // when cnt becomes more than k we reduce our window 
+            while( cnt > k)  //jb tk count n k se bda ho tbtk uksa use kr loo...if the k
+           //'s value is small then u can flip the given number of the 1's to the count..@@easy
+            {
+                if(nums[j] == 0)   //if the first term 0 then make the count decrease and reduce the window
+                {
+                    cnt--;
+                }
+                j++;
+            }
+            ans = max(ans,i - j + 1);   //ans =mx(0,)
+        }
+        return ans; 
+    }
+};
