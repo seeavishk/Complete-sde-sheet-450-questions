@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+// Function to minimize the maximum distance between gas stations
+double minimiseMaxDistance(vector<int> &arr, int k) {
+    // Number of elements in the array
+    int n = arr.size();
+    
+    // Vector to keep track of how many partitions we've made for each segment
+    vector<int> howmany(n+1, 0);
+
+    // Priority queue to store the gaps between elements in descending order
+    // Each element in the priority queue is a pair: {gap, index}
+    // We want the largest gaps first, hence the negative sign
+    priority_queue<pair<long double, int>> pq;
+
+    // Calculate the initial gaps and push into priority queue
+    for (int i = 0; i < n - 1; i++) {
+        pq.push({arr[i+1] - arr[i], i});
+    }
+
+    // Perform k partitions
+    for (int gasStations = 1; gasStations <= k; gasStations++) {
+        // Get the top element from the priority queue
+        auto tp = pq.top();
+        pq.pop();
+        
+        // Extract the index of the gap
+        int second = tp.second;
+
+        // Increment the count of partitions for this gap
+        howmany[second]++;
+
+        // Calculate the new length of this segment after partition
+        long double initialDiff = arr[second + 1] - arr[second];
+        long double newSecLen = initialDiff / (long double)(howmany[second] + 1);
+
+        // Push the new segment length back into the priority queue
+        pq.push({newSecLen, second});
+    }
+
+    // The top element of the priority queue will now have the minimum of maximum distances
+    return pq.top().first;
+}
+
+int main() {
+    // Example usage
+    vector<int> gasStations = {1, 3, 6, 7, 9};
+    int k = 3; // Number of gas stations to be added
+
+    // Calculate the minimum of maximum distances
+    double minMaxDist = minimiseMaxDistance(gasStations, k);
+    
+    // Output the result
+    cout << "Minimum of Maximum Distances: " << minMaxDist << endl;
+
+    return 0;
+}
