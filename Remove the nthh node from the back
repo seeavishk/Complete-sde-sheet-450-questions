@@ -1,0 +1,30 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ //use the approach of the rabbit and the turtle to make it solve
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* start=new ListNode();
+        start->next=head;
+        ListNode* fast=start;  //pehla waala
+        ListNode* slow=start;   //pehla waala
+        for(int i=1;i<=n;i++)
+        fast=fast->next;    //fast ko srif 1 aage bdao.. to make the fast at that node which needed to get delete so reach the fast pointer till there..
+        
+        while(fast->next!=NULL){   //until null nhi ho jaata make it fwd
+            fast=fast->next;     //do the fast as one time andd teh slow too as one time
+            slow=slow->next;
+        }
+        slow->next=slow->next->next;
+        return start->next;
+    }
+};
