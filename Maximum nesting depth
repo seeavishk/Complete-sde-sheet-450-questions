@@ -1,0 +1,22 @@
+//ok so just need to find the matching parenthesis in the string given if they have equality then do print the number of them
+//so what could be the approach..
+// agar ek ek krke andar daaleini the characters ko..( 1) if matched again then pop out complete and count bdate jaao
+// count =0 ... ( 1 ) count =1
+//vector<ans>.push_back(count)
+//+( ( )) count=2...similarly (((3))) hence count is 3..so max of elements from the arr
+class Solution {
+public:
+    int maxDepth(string s) {
+          stack<char> st;
+          int maxy=0;
+          for(char c:s){
+              if(c=='('){
+                st.push(c);
+              }else if(c==')'){
+                maxy=max(maxy,(int)st.size()); //when the closing is encountered then simply find the maxy to get the result..
+                st.pop();
+              }
+          }
+          return maxy;
+    }
+};
