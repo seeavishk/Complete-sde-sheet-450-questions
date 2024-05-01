@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> findPeakGrid(vector<vector<int>>& mat) {
+        int n = mat.size(); // Get the number of rows in the matrix
+        int m = mat[0].size(); // Get the number of columns in the matrix
+
+        for (int i = 0; i < n; i++) { // Loop through each row of the matrix
+            for (int j = 0; j < m; j++) { // Loop through each column of the matrix
+                bool isPeak = true; // Initialize a boolean flag to check if the element is a peak
+
+                if (i > 0 && mat[i][j] < mat[i - 1][j]) { // Check if the element is less than the element above it
+                    isPeak = false; // If so, it is not a peak
+                }
+
+                if (j > 0 && mat[i][j] < mat[i][j - 1]) { // Check if the element is less than the element to its left
+                    isPeak = false; // If so, it is not a peak
+                }
+
+                if (i < n - 1 && mat[i][j] < mat[i + 1][j]) { // Check if the element is less than the element below it
+                    isPeak = false; // If so, it is not a peak
+                }
+
+                if (j < m - 1 && mat[i][j] < mat[i][j + 1]) { // Check if the element is less than the element to its right
+                    isPeak = false; // If so, it is not a peak
+                }
+
+                if (isPeak) { // If the element passed all the above conditions and is still a peak
+                    return {i, j}; // Return the indices of the peak element
+                }
+            }
+        }
+
+        return {}; // If no peak element is found, return an empty vector
+    }
+};
