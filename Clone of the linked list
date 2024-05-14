@@ -1,0 +1,37 @@
+//i will be creating a hashmap to store the node and teh copy node tje space would be 2N
+//instead of using the map we will put the copy node in between...
+//make the copy of each nodes and put it in the ll one after the another..
+//then connect the random pointers in this and then easily return the copyy of the map i.e second part..
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node* temp=head;
+        //step no.1 
+        while(temp!=NULL){
+            Node* newNode=new Node(temp->val); 
+            newNode->next=temp->next;  // newnode ke next ko new
+            temp->next=newNode;
+            temp=temp->next->next;
+        }
+        //step no.2 connected the random from the pointers
+        Node* itr=head;
+        while(itr!=NULL){
+            if(itr->random!=NULL)
+            itr->next->random=itr->random->next;
+            itr=itr->next->next;
+        }
+        //step no.3 //created the dummy node to break the the initial connections..
+        Node* dummy=new Node(0);
+        itr=head;
+        temp=dummy;
+        Node* fast;
+        while(itr!=NULL){
+            fast=itr->next->next;
+            temp->next=itr->next;
+            itr->next=fast;
+            temp=temp->next;
+            itr=fast;
+        }
+        return dummy->next;
+    }
+};
