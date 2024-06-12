@@ -1,0 +1,22 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int n = nums.size(), k, l;
+        for (k = n - 2; k >= 0; k--) {
+            if (nums[k] < nums[k + 1]) {  //to get the break point
+                break;
+            }
+        }
+        if (k < 0) {
+            reverse(nums.begin(), nums.end());  //if not got the breakpoint and in desc order
+        } else {
+            for (l = n - 1; l > k; l--) {
+                if (nums[l] > nums[k]) {  //if not got the breakpoint
+                    break;
+                }
+            }
+            swap(nums[l], nums[k]);
+            reverse(nums.begin() + k + 1, nums.end());  // if got the big number than the previous break and then asc all the reaminig
+        }
+    }
+};
