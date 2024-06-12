@@ -1,0 +1,30 @@
+#include <stack>        // Include the stack library for using the stack data structure
+#include <string>       // Include the string library for using the string data structure
+
+class Solution {
+public:
+    // Function to find the length of the longest valid parentheses substring
+    int longestValidParentheses(std::string s) {
+        std::stack<int> st; // Create a stack to store indices of the characters
+        int count = 0;      // Initialize a variable to keep track of the longest valid parentheses length
+
+        // Check if the string is empty
+        if (s.length() == 0) return 0;
+        
+        // Loop through each character in the string
+        for (int i = 0; i < s.length(); i++) {
+            // If the stack is not empty, the current character is ')', and the character at the index
+            // stored at the top of the stack is '(', then we have found a matching pair
+            if (!st.empty() && s[i] == ')' && s[st.top()] == '(') {
+                st.pop();  // Pop the top element from the stack as we have found a valid pair
+                // Update the count to the maximum of the current count and the length of the current valid substring
+                count = std::max(count, i - (st.empty() ? -1 : st.top()));
+            } else {
+                // If the current character is '(', or there is no matching '(', push the index onto the stack
+                st.push(i);
+            }
+        }
+        
+        return count; // Return the length of the longest valid parentheses substring
+    }
+};
