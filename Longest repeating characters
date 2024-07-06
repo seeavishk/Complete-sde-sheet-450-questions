@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+       int n=s.length();
+       int start=0,maxlen=0,maxfreq=0;
+       vector<int> charCount(26,0);
+       for(int end=0;end<n;end++){
+        maxfreq=max(maxfreq,++charCount[s[end]-'A']);
+        if(end-start+1-maxfreq>k){
+            charCount[s[start]-'A']--;
+            start++;
+        }
+        maxlen=max(maxlen,end-start+1);         
+       }
+       return maxlen;
+    }
+};
