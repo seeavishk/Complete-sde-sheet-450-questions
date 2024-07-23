@@ -1,0 +1,50 @@
+class Solution {  
+public:  
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {  
+        // Initialize a queue for BFS with pairs of current word and step count  
+        queue<pair<string, int>> q;  
+        // Use correct syntax to push a pair into the queue  
+        q.push({beginWord, 1}); // Corrected: use curly braces to initialize the pair  
+        
+        // Use a set to track words in the word list for O(1) lookups  
+        unordered_set<string> st(wordList.begin(), wordList.end());  
+
+        // If endWord is not in the set, return 0 as no transformation is possible  
+        if (st.find(endWord) == st.end()) {  
+            return 0; // Add this check to handle case where endWord is not found  
+        }  
+
+        // BFS loop  
+        while (!q.empty()) {  
+            auto [currentWord, steps] = q.front(); // Get the current word and the step count  
+            q.pop(); // Remove the front element from the queue  
+            
+            // If we reach the endWord, return the number of steps  
+            if (currentWord == endWord) {  
+                return steps; // This means we found the transformation  
+            }  
+
+            // Iterate through each character of the current word  
+            for (int i = 0; i < currentWord.size(); i++) {  
+                char originalChar = currentWord[i]; // Store the original character  
+                
+                // Try changing the current character to every possible letter  
+                for (char c = 'a'; c <= 'z'; c++) {  
+                    if (c == originalChar) continue; // Skip the same character  
+
+                    currentWord[i] = c; // Change the character at position i  
+
+                    // Check if the new word exists in the set  
+                    if (st.find(currentWord) != st.end()) {  
+                        q.push({currentWord, steps + 1}); // Push the new word with incremented steps  
+                        st.erase(currentWord); // Remove the word to avoid revisiting  
+                    }  
+                }  
+
+                currentWord[i] = originalChar; // Restore original character  
+            }  
+        }  
+
+        return 0; // If we exhaust all possibilities without finding endWord  
+    }  
+};
