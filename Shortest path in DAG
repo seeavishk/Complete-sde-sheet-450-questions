@@ -1,0 +1,69 @@
+ void topoSort(int node, vector<pair<int,int>> adj[], int vis[], stack<int>& st) {  
+        vis[node] = 1; // Mark the current node as visited  
+        // Iterate over all adjacent nodes  
+        for (auto it : adj[node]) {  
+            int v = it.first; // Get the adjacent node  
+            // If the adjacent node has not been visited, recursively perform topological sort  
+            if (!vis[v]) {  
+                topoSort(v, adj, vis, st);  
+            }  
+        }  
+        st.push(node); // Push the current node onto the stack after visiting all its neighbors  
+    }  
+
+    // Function to find the shortest path in a DAG  
+    vector<int> shortestPath(int N, int M, vector<vector<int>>& edges) {  
+        // Step 1: Create an adjacency list from the edges  
+        vector<pair<int, int>> adj[N];  
+        for (int i = 0; i < M; i++) {  
+            int u = edges[i][0]; // Starting node of the edge  
+            int v = edges[i][1]; // Ending node of the edge  
+            int wt = edges[i][2]; // Weight of the edge  
+            adj[u].push_back({v, wt}); // Add the directed edge to the adjacency list  
+        }  
+        
+        // Step 2: Perform topological sort  
+        int vis[N] = {0}; // Initialize the visited array to track visited nodes  
+        stack<int> st; // Stack to store the topological order  
+        
+        // Perform topological sorting for all unvisited nodes  
+        for (int i = 0; i < N; i++) {  
+            if (!vis[i]) {  
+                topoSort(i, adj, vis, st); // Start a topological sort from the current node  
+            }  
+        }  
+
+        // Step 3: Initialize distances  
+        vector<int> dist(N, INT_MAX); // Distance vector initialized to infinity  
+        dist[0] = 0; // Distance to the source node (node 0) is set to 0  
+
+        // Step 4: Process nodes in topological order  
+        while (!st.empty()) {  
+            int node = st.top(); // Get the top node from the stack  
+            st.pop(); // Remove the node from the stack  
+            
+            // Only process this node if it is reachable (i.e., its distance is not INT_MAX)  
+            if (dist[node] != INT_MAX) {  
+                // Iterate over all adjacent nodes of the current node  
+                for (auto it : adj[node]) {  
+                    int v = it.first; // Get the adjacent node  
+                    int weight = it.second; // Get the weight of the edge  
+                    
+                    // If the distance to the adjacent node can be minimized  
+                    if (dist[node] + weight < dist[v]) {  
+                        dist[v] = dist[node] + weight; // Update the distance to the adjacent node  
+                    }  
+                }  
+            }  
+        }  
+        
+        // Replace any unreachable vertices from INT_MAX to -1  
+        for (int i = 0; i < N; i++) {  
+            if (dist[i] == INT_MAX) {  
+                dist[i] = -1; // If distance is still INT_MAX, set to -1  
+            }  
+        }  
+        
+        // Return the distance vector containing the shortest path distances from the source  
+        return dist;  
+    }  
