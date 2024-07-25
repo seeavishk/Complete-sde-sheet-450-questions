@@ -1,0 +1,34 @@
+vector<int> adj[N]; // Create an adjacency list to represent the graph.  
+for(auto it : edges){ // Iterate through each edge in the edges list.  
+    adj[it[0]].push_back(it[1]); // Add an edge from it[0] to it[1].  
+    adj[it[1]].push_back(it[0]); // Add an edge from it[1] to it[0] (undirected graph).  
+}  
+
+int dist[N]; // Create an array to store the distance from the source node.  
+for(int i = 0; i < N; i++) dist[i] = 1e9; // Initialize all distances to a large number (infinity).  
+dist[src] = 0; // Set the distance from the source node to itself as 0.  
+
+queue<int> q; // Create a queue to facilitate BFS (Breadth-First Search).  
+q.push(src); // Push the source node onto the queue.  
+
+while(!q.empty()){ // While there are nodes to process in the queue.  
+    int node = q.front(); // Get the front node from the queue.  
+    q.pop(); // Remove the front node from the queue.  
+    
+    for(auto it : adj[node]){ // Iterate through all adjacent nodes of the current node.  
+        // Check if the distance to this adjacent node can be improved.  
+        if(dist[node] + 1 < dist[it]){   
+            dist[it] = 1 + dist[node]; // Update the distance to this adjacent node.  
+            q.push(it); // Push this adjacent node onto the queue for further processing.  
+        }  
+    }  
+}  
+
+vector<int> ans(N, -1); // Create a results vector initialized to -1 for all nodes.  
+for(int i = 0; i < N; i++){ // Iterate through all nodes to compile final results.  
+    if(dist[i] != 1e9){ // Check if the node is reachable (distance not equal to infinity).  
+        ans[i] = dist[i]; // Update the result vector with the actual distance.  
+    }  
+}  
+
+return ans; // Return the final array of distances from the source node.
