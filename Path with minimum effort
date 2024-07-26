@@ -1,0 +1,52 @@
+class Solution {  
+public:  
+    int minimumEffortPath(vector<vector<int>>& heights) {  
+        // Create a priority queue to store pairs of (effort, coordinates).  
+        // We use a min-heap here (thus, greater<...>) to always expand the path with the smallest effort first.  
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;  
+        
+        int n = heights.size(); // Number of rows  
+        int m = heights[0].size(); // Number of columns  
+
+        // Direction vectors for navigating adjacent cells: right, left, down, up  
+        vector<int> directions = {0, 1, 0, -1, 1, 0, -1, 0};  
+
+        // Create a 2D vector to track the minimum effort to reach each cell, initialized to infinity  
+        vector<vector<int>> minEffort(n, vector<int>(m, INT_MAX));  
+        minEffort[0][0] = 0; // The effort to reach the starting point (0,0) is 0  
+        pq.push({0, {0, 0}}); // Push the starting cell into the priority queue with 0 effort  
+
+        // Use Dijkstra's algorithm to find the path with minimum maximum effort  
+        while (!pq.empty()) {  
+            auto [effort, pos] = pq.top(); // Get the cell with the smallest effort from the priority queue  
+            pq.pop();  
+            int x = pos.first, y = pos.second;  
+
+            // If we reached the bottom-right corner, return the recorded minimum effort  
+            if (x == n - 1 && y == m - 1) {  
+                return effort;  
+            }  
+
+            // Explore all four directions  
+            for (int i = 0; i < 4; ++i) {  
+                int new_x = x + directions[i * 2];  
+                int new_y = y + directions[i * 2 + 1];  
+
+                // Check boundary conditions  
+                if (new_x >= 0 && new_x < n && new_y >= 0 && new_y < m) {  
+                    // Calculate the effort required to move to the new cell  
+                    int new_effort = max(effort, abs(heights[new_x][new_y] - heights[x][y]));  
+
+                    // If the new calculated effort is less than any previously recorded effort to reach this cell  
+                    if (new_effort < minEffort[new_x][new_y]) {  
+                        minEffort[new_x][new_y] = new_effort; // Update the minimum effort to reach this cell  
+                        pq.push({new_effort, {new_x, new_y}}); // Add the new cell to the priority queue  
+                    }  
+                }  
+            }  
+        }  
+
+        // In a sensible situation, we should never reach here as we will always have a path.  
+        return -1;  
+    }  
+};
