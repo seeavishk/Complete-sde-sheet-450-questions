@@ -1,0 +1,51 @@
+#include <vector>  
+#include <utility> // For std::pair  
+#include <limits>  // For std::numeric_limits  
+#include <queue>   // For std::priority_queue  
+#include <algorithm> // For std::fill  
+
+using namespace std;  
+
+class Solution {  
+public:  
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {  
+        // Step 1: Initialize the distance array with a large value (infinity)  
+        vector<int> dist(n, numeric_limits<int>::max());  
+        dist[src] = 0; // The cost to reach the source is 0  
+
+        // Step 2: Use a BFS approach with a queue  
+        queue<pair<int, pair<int, int>>> q; // Queue to hold {cost, {node, stops}}  
+        q.push({0, {src, 0}}); // Start from src with 0 cost and 0 stops  
+
+        // Step 3: Perform the BFS for at most k+1 levels (k stops means k+1 edges)  
+        while (!q.empty()) {  
+            auto current = q.front();  
+            q.pop();  
+
+            int cost = current.first; // Current cost  
+            int node = current.second.first; // Current node  
+            int stops = current.second.second; // Current stops  
+
+            // If we have made more than k stops, continue  
+            if (stops > k) continue;  
+
+            // Step 4: Explore the neighbors of the current node  
+            for (const auto& flight : flights) {  
+                int nextNode = flight[1]; // Target node  
+                int price = flight[2]; // Cost to reach the target node  
+
+                // Step 5: Update the cost to reach the next node if it's cheaper  
+                if (cost + price < dist[nextNode]) {  
+                    dist[nextNode] = cost + price; // Update distance for nextNode  
+                    q.push({dist[nextNode], {nextNode, stops + 1}}); // Push new state into the queue  
+                }  
+            }  
+        }  
+
+        // Step 6: Check if we reached the destination; if not, return -1  
+        if (dist[dst] == numeric_limits<int>::max()) return -1; // If destination is unreachable  
+
+        // Step 7: Return the minimum cost to reach the destination  
+        return dist[dst];   
+    }  
+};
