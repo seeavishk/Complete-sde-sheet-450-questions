@@ -1,0 +1,78 @@
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution {
+  public:
+    int minimumMultiplications(vector<int>& arr, int start, int end) {
+        // code here
+        //will implement the dijakstra algorithm in this 
+        //since we would be having the different paths to get the end result but here is a catch we have to take the node form the start to end..
+        //which path to select is the answer we wanted to get the resul as..
+        //node numbers are from 0 to 9999
+          queue<pair<int,int>> q;  
+    q.push({start, 0}); // Push the starting node and initial steps  
+    
+    // Use a distance vector to keep track of the shortest distance to each node  
+    vector<int> dist(100000, numeric_limits<int>::max()); // Adjust size to mod  
+    dist[start] = 0; // Distance to start node is 0  
+
+    int mod = 100000; // Modulus as specified  
+    
+    while (!q.empty()) {  
+        int node = q.front().first; // Current node  
+        int steps = q.front().second; // Number of steps to reach this node  
+        q.pop(); // Remove the current node from the queue  
+
+        // Explore each transformation from arr  
+        for (auto it : arr) {  
+            int num = (it * node) % mod; // Calculate the new node  
+
+            // If we find a shorter path to this node, update distance and queue  
+            if (steps + 1 < dist[num]) {  
+                dist[num] = steps + 1; // Update the distance  
+
+                // If we reached the end node, we can return the number of steps  
+                if (num == end) {  
+                    return steps + 1; // Return the number of steps taken  
+                }  
+                
+                q.push({num, steps + 1}); // Push the new node to the queue  
+            }  
+        }  
+    }  
+
+    // If we exit the loop without finding the end node, return -1 
+    if(start==end) return 0;
+    return -1; 
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main() {
+
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++) {
+            cin >> arr[i];
+        }
+        int start, end;
+        cin >> start >> end;
+        Solution obj;
+        cout << obj.minimumMultiplications(arr, start, end) << endl;
+    }
+}
+
+// } Driver Code Ends
