@@ -1,0 +1,44 @@
+   priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;  
+
+    // Vector to keep track of visited nodes, initialized to 0 (not visited) for all nodes  
+    vector<int> vis(V, 0);  
+
+    // Variable to store the sum of the weights of the minimum spanning tree  
+    int sum = 0;  
+
+    // Push the starting node (node 0) with weight 0 into the priority queue  
+    // {weight, node}  
+    pq.push({0, 0});  
+
+    // Continue until there are no nodes left in the priority queue  
+    while (!pq.empty()) {  
+        // Get the top element from the priority queue  
+        auto it = pq.top();  
+        pq.pop();  
+        int node = it.second; // Extract the node from the current pair  
+        int wt = it.first;    // Extract the weight from the current pair  
+
+        // If the node has already been visited, skip it  
+        if (vis[node] == 1) continue;  
+
+        // Mark the current node as visited  
+        vis[node] = 1;  
+
+        // Add the weight of this edge to the total sum  
+        sum += wt;  
+
+        // Iterate through the adjacent nodes of the current node  
+        for (auto edge : adj[node]) {  
+            int adjNode = edge[0]; // Get the adjacent node  
+            int edN = edge[1];     // Get the edge weight  
+            
+            // If the adjacent node has not been visited, push it into the priority queue  
+            if (!vis[adjNode]) {  
+                pq.push({edN, adjNode});  
+            }  
+        }  
+    }  
+    
+    // Return the total weight of the minimum spanning tree  
+    return sum;  
+}  
