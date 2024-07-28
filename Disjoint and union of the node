@@ -1,0 +1,27 @@
+int find(int A[], int X) {  
+    // Path compression optimization  
+    if (A[X] != X) {  
+        A[X] = find(A, A[X]); // Recursively find the root and compress the path  
+    }  
+    return A[X];  
+}  
+
+// Function to perform the union of the sets containing 'X' and 'Z'  
+void unionSet(int A[], int X, int Z) {  
+    // Find the roots of the sets for X and Z  
+    int rootX = find(A, X);  
+    int rootZ = find(A, Z);  
+    
+    // If they are in the same set, do nothing  
+    if (rootX != rootZ) {  
+        // Union by setting the root of one set to point to the root of the other  
+        A[rootX] = rootZ; // You may also choose to point rootZ to rootX for balanced trees  
+    }  
+}  
+
+// Initialization function to set up the Union-Find structure  
+void initialize(int A[], int n) {  
+    for (int i = 0; i < n; i++) {  
+        A[i] = i; // Each element starts as its own parent  
+    }  
+}  
