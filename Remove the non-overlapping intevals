@@ -1,0 +1,22 @@
+class Solution {  
+public:  
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {  
+        if (intervals.empty()) return 0; // Handle empty case  
+
+        sort(intervals.begin(), intervals.end());  
+        int res = 0; // Initialize res  
+        int prev_end = intervals[0][1];  
+
+        for (int i = 1; i < intervals.size(); i++) {  
+            if (prev_end > intervals[i][0]) { // There is an overlap  
+                res++; // Increment the count of overlaps  
+                // We choose to keep the interval with the earlier end time  
+                prev_end = min(prev_end, intervals[i][1]);  
+            } else {  
+                // No overlap, move to the next interval  
+                prev_end = intervals[i][1];  
+            }  
+        }  
+        return res;  
+    }  
+};
