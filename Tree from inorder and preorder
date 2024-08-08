@@ -1,0 +1,64 @@
+#include <vector>  
+#include <unordered_map>  
+using namespace std;  
+
+/**  
+ * Definition for a binary tree node.  
+ * struct TreeNode {  
+ *     int val;  
+ *     TreeNode *left;  
+ *     TreeNode *right;  
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}  
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}  
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}  
+ * };  
+ */  
+
+// The main class to implement tree construction  
+class Solution {  
+public:  
+    // The main function to construct a binary tree from its preorder and inorder traversals  
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {  
+        // Create a map to store the index of each value in the inorder array for faster lookups  
+        unordered_map<int, int> inorderIndexMap;  
+        for (int i = 0; i < inorder.size(); ++i) {  
+            inorderIndexMap[inorder[i]] = i;  // Map the value to its index  
+        }  
+
+        // Start building the tree recursively  
+        return buildTreeHelper(preorder, 0, preorder.size() - 1,   
+                                inorderIndexMap, 0, inorder.size() - 1);  
+    }  
+    
+private:  
+    // Helper function to recursively build the tree  
+    TreeNode* buildTreeHelper(vector<int>& preorder, int preStart, int preEnd,   
+                               unordered_map<int, int>& inorderIndexMap,   
+                               int inStart, int inEnd) {  
+        // Base case: if there are no elements to construct the tree  
+        if (preStart > preEnd || inStart > inEnd) {  
+            return nullptr;  
+        }  
+
+        // The first element in the preorder array is the root of the current subtree  
+        int rootVal = preorder[preStart];  
+        TreeNode* root = new TreeNode(rootVal);  // Create the root node  
+
+        // Get the index of the root value in the inorder array  
+        int rootIndexInInorder = inorderIndexMap[rootVal];  
+
+        // Calculate the number of elements in the left subtree  
+        int leftTreeSize = rootIndexInInorder - inStart;  
+
+        // Recursively build the left subtree  
+        root->left = buildTreeHelper(preorder, preStart + 1, preStart + leftTreeSize,   
+                                      inorderIndexMap, inStart, rootIndexInInorder - 1);  
+
+        // Recursively build the right subtree  
+        root->right = buildTreeHelper(preorder, preStart + leftTreeSize + 1, preEnd,   
+                                       inorderIndexMap, rootIndexInInorder + 1, inEnd);  
+        
+        // Return the constructed subtree  
+        return root;  
+    }  
+};
