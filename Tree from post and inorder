@@ -1,0 +1,53 @@
+#include <vector>  
+using namespace std;  
+
+// Definition for a binary tree node.  
+struct TreeNode {  
+    int val;  
+    TreeNode *left;  
+    TreeNode *right;  
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}  
+};  
+
+class Solution {  
+public:  
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {  
+        // Map to store the index of each value in inorder for quick lookup  
+        unordered_map<int, int> inorderIndex;  
+        for (int i = 0; i < inorder.size(); ++i) {  
+            inorderIndex[inorder[i]] = i;  
+        }  
+        
+        // Start the recursion from the entire array  
+        return buildTreeHelper(postorder, 0, postorder.size() - 1, 0, inorder.size() - 1, inorderIndex);  
+    }  
+    
+private:  
+    TreeNode* buildTreeHelper(vector<int>& postorder, int postStart, int postEnd,   
+                               int inStart, int inEnd,   
+                               unordered_map<int, int>& inorderIndex) {  
+        if (postStart > postEnd || inStart > inEnd) {  
+            return nullptr; // Base case: no elements to construct  
+        }  
+        
+        // The last element in the postorder segment is the root  
+        int rootVal = postorder[postEnd];  
+        TreeNode* root = new TreeNode(rootVal);  
+        
+        // Get the index of the root in inorder array  
+        int inRootIndex = inorderIndex[rootVal];  
+        
+        // Calculate the size of the left subtree  
+        int leftSize = inRootIndex - inStart;  
+        
+        // Recursively build the left and right subtrees  
+        root->left = buildTreeHelper(postorder, postStart, postStart + leftSize - 1,   
+                                      inStart, inRootIndex - 1,   
+                                      inorderIndex);  
+        root->right = buildTreeHelper(postorder, postStart + leftSize, postEnd - 1,   
+                                       inRootIndex + 1, inEnd,   
+                                       inorderIndex);  
+        
+        return root;  
+    }  
+};
