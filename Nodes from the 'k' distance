@@ -1,0 +1,67 @@
+void buildParentMap(TreeNode* node, unordered_map<TreeNode*, TreeNode*>& parentMap) {  
+    if (!node) return;             // Base case: if node is NULL, just return  
+    // If there's a left child, add it to the parent map and recurse  
+    if (node->left) {  
+        parentMap[node->left] = node; // Map left child to its parent (current node)  
+        buildParentMap(node->left, parentMap); // Recur for left subtree  
+    }  
+    // If there's a right child, add it to the parent map and recurse  
+    if (node->right) {  
+        parentMap[node->right] = node; // Map right child to its parent (current node)  
+        buildParentMap(node->right, parentMap); // Recur for right subtree  
+    }  
+}  
+
+// Function to find all nodes at distance k from the target node  
+vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {  
+    unordered_map<TreeNode*, TreeNode*> parentMap; // Map to store parent of each node  
+    buildParentMap(root, parentMap); // Build the parent map using DFS  
+
+    queue<TreeNode*> q;  // Queue for BFS  
+    unordered_map<TreeNode*, bool> visited; // Map to track visited nodes  
+
+    q.push(target);      // Start BFS from the target node  
+    visited[target] = true; // Mark the target as visited  
+    
+    int currentLevel = 0; // Initialize the current level to 0  
+
+    // Perform BFS to find nodes at the desired distance  
+    while (!q.empty()) {  
+        if (currentLevel == k) {  // Check if we have reached the k-th level  
+            vector<int> result;    // Vector to store the result  
+            // Collect all nodes at this level  
+            while (!q.empty()) {  
+                result.push_back(q.front()->val); // Add node value to result  
+                q.pop(); // Remove the node from the queue  
+            }  
+            return result; // Return the result once we reach the desired level  
+        }  
+        
+        int levelSize = q.size(); // Get the size of the current level  
+        
+        // Process all nodes at the current level  
+        for (int i = 0; i < levelSize; ++i) {  
+            TreeNode* current = q.front(); // Get the front node from the queue  
+            q.pop(); // Remove it from the queue  
+
+            // Check the left child of the current node  
+            if (current->left && !visited[current->left]) { // If left child exists and not visited  
+                visited[current->left] = true; // Mark it as visited  
+                q.push(current->left); // Add it to the queue for next processing  
+            }  
+            // Check the right child of the current node  
+            if (current->right && !visited[current->right]) { // If right child exists and not visited  
+                visited[current->right] = true; // Mark it as visited  
+                q.push(current->right); // Add it to the queue  
+            }  
+            // Check the parent of the current node using the parentMap  
+            if (parentMap[current] && !visited[parentMap[current]]) { // If parent exists and not visited  
+                visited[parentMap[current]] = true; // Mark it as visited  
+                q.push(parentMap[current]); // Add parent to the queue  
+            }  
+        }  
+        currentLevel++; // Move to the next level  
+    }  
+
+    return {}; // If no nodes found at the desired distance, return an empty vector  
+}  
