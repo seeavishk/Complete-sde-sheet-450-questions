@@ -1,0 +1,24 @@
+ class Solution {  
+public:  
+    TreeNode* build(std::vector<int>& preorder, int& i, int bound) {  
+        if (i >= preorder.size() || preorder[i] > bound) {  
+            return nullptr;  // Base case, return null if end of preorder is reached or if current value exceeds bound.  
+        }  
+        
+        // Create the root node for the current segment of the preorder array.  
+        TreeNode* root = new TreeNode(preorder[i++]);  // Increment index after using it.  
+        
+        // Construct the left subtree with the updated bound being the root's value.  
+        root->left = build(preorder, i, root->val);   
+        
+        // Construct the right subtree with the original bound.  
+        root->right = build(preorder, i, bound);  
+        
+        return root;  // Return the constructed subtree root.  
+    }  
+    
+    TreeNode* bstFromPreorder(std::vector<int>& preorder) {  
+        int index = 0;  // This will keep track of the current index.  
+        return build(preorder, index, INT_MAX);  // Start with the maximum integer as the upper bound.  
+    }  
+};
