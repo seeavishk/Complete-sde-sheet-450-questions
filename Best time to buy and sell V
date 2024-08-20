@@ -1,0 +1,34 @@
+// The problem allows buying and selling stocks with the constraint   
+// that after selling on a given day, you can't buy on the next day.  
+class Solution {  
+public:  
+    // Recursive function to determine maximum profit  
+    int f(int ind, int buy, vector<int> &prices) {  
+        // Base case: if we've gone past the last day, no profit can be made  
+        if (ind >= prices.size()) return 0;  
+
+        // If we are in a state where we can buy  
+        if (buy == 1) {  
+            // Option 1: Buy the stock today (subtract today's price)   
+            // and move to the next day (ind + 1) to sell (state becomes 0 - cannot buy next day)  
+            // Option 2: Do nothing and move to the next day (stay in the buy state)  
+            return max(-prices[ind] + f(ind + 1, 0, prices), 0 + f(ind + 1, 1, prices));  
+        }  
+
+        // If we are in a state where we can sell  
+        // Option 1: Sell the stock today (add today's price)   
+        // and move to the day after tomorrow (ind + 2) to buy (next buy can only happen after one day)  
+        // Option 2: Do nothing and move to the next day (stay in the sell state)  
+        return max(prices[ind] + f(ind + 2, 1, prices), 0 + f(ind + 1, 0, prices));  
+    }  
+
+    // Main function to calculate maximum profit from stock prices  
+    int maxProfit(vector<int>& prices) {  
+        // 'n' should be the size of prices vector  
+        int n = prices.size();  
+        // Initialize the dp array (if we decide to use dynamic programming later)  
+        // Here 'dp' was declared but not used, so we can skip this line or use it properly.  
+        // vector<vector<int>> dp(n, vector<int>(2, -1));  
+        return f(0, 1, prices); // Start from the first day with the option to buy  
+    }  
+};
