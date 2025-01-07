@@ -1,0 +1,53 @@
+/**  
+ * Definition for singly-linked list.  
+ */  
+struct ListNode {  
+    int val;                  // The value stored in the node  
+    ListNode *next;          // Pointer to the next node in the list  
+
+    // Default constructor: initializes the value to 0 and next pointer to nullptr  
+    ListNode() : val(0), next(nullptr) {}  
+
+    // Constructor that initializes the node with a given value and sets next to nullptr  
+    ListNode(int x) : val(x), next(nullptr) {}  
+
+    // Constructor that initializes the node with a given value and a pointer to the next node  
+    ListNode(int x, ListNode *next) : val(x), next(next) {}  
+};  
+
+// Assuming this is part of a function where you are processing nodes in a linked list  
+// and using a min heap to manage the nodes.  
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {  
+    ListNode dummy(0);       // Create a dummy node to simplify the merging process  
+    ListNode* current = &dummy; // Pointer to track the last node in the merged list  
+
+    // Priority queue to store the nodes, sorted by their values  
+    auto cmp = [](ListNode* a, ListNode* b) {  
+        return a->val > b->val; // Min-heap: prioritize smaller values  
+    };  
+    priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> minHeap(cmp);  
+
+    // Initialize the minHeap with the head of each list  
+    for (ListNode* node : lists) {  
+        if (node != nullptr) {  
+            minHeap.push(node); // Add the first node of each list to the heap  
+        }  
+    }  
+
+    // Process the heap until it's empty  
+    while (!minHeap.empty()) {  
+        ListNode* node = minHeap.top(); // Get the smallest node  
+        minHeap.pop();                  // Remove the smallest node from the heap  
+
+        current->next = node;          // Link the smallest node to the merged list  
+        current = current->next;       // Move the current pointer to the last node in the merged list  
+
+        // If there is a next node in the same list, add it to the heap  
+        if (node->next != nullptr) {  
+            minHeap.push(node->next); // Push the next node into the minHeap  
+        }  
+    }  
+
+    return dummy.next; // Return the merged list, starting from the first real node  
+}
